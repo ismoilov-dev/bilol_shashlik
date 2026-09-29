@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bilol Shashlik — olovda pishgan haqiqiy shashlik</title>
+<meta name="description" content="Bilol Shashlik: menyu, narxlar, manzil va Telegram orqali buyurtma.">
+<meta property="og:title" content="Bilol Shashlik">
+<meta property="og:description" content="Olovda pishgan haqiqiy shashlik. Menyu, narxlar va buyurtma.">
+<meta name="theme-color" content="#16110d">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23e8611a'/%3E%3Cpath d='M32 12c6 9 12 13 12 22a12 12 0 0 1-24 0c0-5 3-8 5-11 1 4 3 6 5 6-1-6 0-11 2-17z' fill='%23fff3e6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#16110d; --bg2:#1f1812; --card:#261d16; --line:#3a2d22;
+  --text:#f7efe6; --muted:#b9a896; --ember:#e8611a; --ember2:#ff8a3d; --gold:#f2b544;
+  --ok:#3fb56b; --radius:18px; --max:1180px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{font-family:Rubik,system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 16px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 22px;border-radius:999px;font-weight:600;transition:transform .15s,background .2s,box-shadow .2s;white-space:nowrap}
+.btn:active{transform:scale(.97)}
+.btn-fire{background:linear-gradient(135deg,var(--ember),var(--ember2));color:#fff;box-shadow:0 8px 24px -8px rgba(232,97,26,.7)}
+.btn-fire:hover{box-shadow:0 10px 30px -6px rgba(232,97,26,.9)}
+.btn-ghost{border:1px solid var(--line);background:rgba(255,255,255,.03)}
+.btn-ghost:hover{background:rgba(255,255,255,.07)}
+svg.i{width:20px;height:20px;flex:none}
+
+/* header */
+header{position:sticky;top:0;z-index:50;background:rgba(22,17,13,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(58,45,34,.6)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:-.3px}
+.logo-mark{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,var(--ember),var(--gold));display:grid;place-items:center}
+.logo-mark svg{width:22px;height:22px}
+.nav-links{display:flex;gap:26px;color:var(--muted);font-weight:500}
+.nav-links a:hover{color:var(--text)}
+.nav .btn{padding:10px 18px}
+@media(max-width:760px){.nav-links{display:none}.nav .btn span{display:none}.nav .btn{padding:10px 12px}}
+
+/* hero */
+.hero{position:relative;overflow:hidden;padding:72px 0 64px}
+.hero::before{content:"";position:absolute;inset:-40% -10% auto auto;width:720px;height:720px;background:radial-gradient(circle,rgba(232,97,26,.28),transparent 62%);pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;position:relative}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;background:rgba(232,97,26,.12);color:var(--ember2);font-weight:600;font-size:14px;margin-bottom:20px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px rgba(63,181,107,.2)}
+.dot.closed{background:#d9534f;box-shadow:0 0 0 4px rgba(217,83,79,.2)}
+h1{font-size:clamp(38px,6.4vw,68px);line-height:1.02;letter-spacing:-1.5px;font-weight:800}
+h1 em{font-style:normal;background:linear-gradient(90deg,var(--ember2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{color:var(--muted);font-size:18px;margin:20px 0 30px;max-width:520px}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+.hero-stats{display:flex;gap:28px;margin-top:36px;flex-wrap:wrap}
+.hero-stats b{display:block;font-size:22px}
+.hero-stats span{color:var(--muted);font-size:14px}
+.hero-visual{position:relative;aspect-ratio:1/1;border-radius:32px;overflow:hidden;background:radial-gradient(circle at 50% 70%,#5a2a10,#1f1510 70%);border:1px solid var(--line)}
+.hero-visual img{width:100%;height:100%;object-fit:cover}
+.hero-visual .ph{position:absolute;inset:0;display:grid;place-items:center}
+.hero-visual .ph svg{width:70%;height:auto;filter:drop-shadow(0 20px 40px rgba(0,0,0,.5))}
+.flame{animation:flick 2.4s ease-in-out infinite alternate;transform-origin:50% 100%}
+@keyframes flick{0%{transform:scaleY(1)}50%{transform:scaleY(1.06) skewX(-2deg)}100%{transform:scaleY(.96) skewX(2deg)}}
+@media(max-width:860px){.hero{padding:40px 0 48px}.hero-grid{grid-template-columns:1fr;gap:32px}.hero-visual{max-width:460px;width:100%;margin:0 auto;aspect-ratio:4/3}}
+
+/* sections */
+section.block{padding:72px 0}
+.sec-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:28px;flex-wrap:wrap}
+h2{font-size:clamp(28px,4vw,40px);letter-spacing:-.8px;line-height:1.1}
+.sec-head p{color:var(--muted)}
+
+/* tabs */
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:24px;scrollbar-width:none;position:sticky;top:68px;z-index:20;background:var(--bg);padding-top:10px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:10px 18px;border-radius:999px;border:1px solid var(--line);color:var(--muted);font-weight:500;white-space:nowrap;transition:.2s}
+.tab:hover{color:var(--text)}
+.tab.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+
+/* menu grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:transform .2s,border-color .2s}
+.card:hover{transform:translateY(-3px);border-color:#57412f}
+.card .pic{aspect-ratio:4/3;background:linear-gradient(135deg,#3a2415,#241a13);position:relative;overflow:hidden}
+.card .pic img{width:100%;height:100%;object-fit:cover}
+.card .pic .ph{position:absolute;inset:0;display:grid;place-items:center;color:#7a5236}
+.card .pic .ph svg{width:44%;height:auto}
+.badge{position:absolute;top:12px;left:12px;background:var(--gold);color:#2b1a05;font-size:12px;font-weight:700;padding:5px 10px;border-radius:999px}
+.badge.off{background:#3b3029;color:var(--muted)}
+.card .body{padding:16px 16px 18px;display:flex;flex-direction:column;gap:6px;flex:1}
+.card h3{font-size:18px;line-height:1.25}
+.card .desc{color:var(--muted);font-size:14px;flex:1}
+.card .row{display:flex;align-items:center;justify-content:space-between;margin-top:10px;gap:8px}
+.price{font-weight:700;font-size:19px;color:var(--gold)}
+.price small{font-size:13px;color:var(--muted);font-weight:500}
+.add{width:42px;height:42px;border-radius:12px;background:var(--ember);color:#fff;display:grid;place-items:center;font-size:22px;transition:.15s}
+.add:hover{background:var(--ember2)}
+.qty{display:flex;align-items:center;gap:10px;background:#1a130e;border-radius:12px;padding:4px}
+.qty button{width:34px;height:34px;border-radius:9px;background:#33261c;font-size:18px}
+.qty b{min-width:18px;text-align:center}
+.card.unavailable{opacity:.55}
+.cat-h{font-size:22px;margin:36px 0 14px}
+.cat-h:first-child{margin-top:4px}
+.empty{color:var(--muted);padding:40px;text-align:center;border:1px dashed var(--line);border-radius:var(--radius)}
+.skeleton{height:320px;border-radius:var(--radius);background:linear-gradient(90deg,#221a14,#2b2119,#221a14);background-size:200% 100%;animation:sk 1.3s infinite}
+@keyframes sk{to{background-position:-200% 0}}
+
+/* features */
+.feats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.feat{padding:26px;border-radius:var(--radius);background:var(--bg2);border:1px solid var(--line)}
+.feat .ic{width:48px;height:48px;border-radius:14px;background:rgba(232,97,26,.14);color:var(--ember2);display:grid;place-items:center;margin-bottom:16px}
+.feat h3{font-size:19px;margin-bottom:6px}
+.feat p{color:var(--muted);font-size:15px}
+@media(max-width:760px){.feats{grid-template-columns:1fr}}
+
+/* contact */
+.contact{display:grid;grid-template-columns:1fr 1.2fr;gap:18px}
+.info{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);padding:28px;display:flex;flex-direction:column;gap:20px}
+.info-row{display:flex;gap:14px;align-items:flex-start}
+.info-row .ic{width:44px;height:44px;border-radius:12px;background:rgba(232,97,26,.14);color:var(--ember2);display:grid;place-items:center;flex:none}
+.info-row small{color:var(--muted);display:block;font-size:13px}
+.info-row b{font-weight:600}
+.info-row a:hover{color:var(--ember2)}
+.map{border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);min-height:340px;background:var(--bg2);display:grid;place-items:center;color:var(--muted)}
+.map iframe{width:100%;height:100%;min-height:340px;border:0;display:block}
+@media(max-width:860px){.contact{grid-template-columns:1fr}}
+
+/* footer */
+footer{border-top:1px solid var(--line);background:#120e0a;padding:52px 0 28px;margin-top:40px}
+.foot{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:32px}
+.foot h4{font-size:15px;color:var(--muted);font-weight:500;margin-bottom:14px;text-transform:uppercase;letter-spacing:1px}
+.foot p{color:var(--muted)}
+.foot ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.foot li a{display:inline-flex;align-items:center;gap:10px;font-weight:500}
+.foot li a:hover{color:var(--ember2)}
+.socials{display:flex;gap:10px;margin-top:18px}
+.soc{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;border:1px solid var(--line);transition:.2s}
+.soc:hover{background:var(--ember);border-color:var(--ember)}
+.copy{margin-top:40px;padding-top:22px;border-top:1px solid var(--line);color:#7d6d5e;font-size:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media(max-width:760px){.foot{grid-template-columns:1fr}}
+
+/* cart */
+.cartbar{position:fixed;left:50%;bottom:18px;transform:translate(-50%,140%);z-index:60;width:min(560px,calc(100% - 32px));background:var(--text);color:var(--bg);border-radius:20px;padding:12px 12px 12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 20px 50px -10px rgba(0,0,0,.7);transition:transform .35s cubic-bezier(.2,.9,.3,1.2)}
+.cartbar.show{transform:translate(-50%,0)}
+.cartbar b{font-size:17px;white-space:nowrap}
+body.has-cart footer{padding-bottom:110px}
+@media(max-width:560px){.card .pic{aspect-ratio:16/10}}
+.cartbar small{display:block;color:#6b5b4d;font-size:13px}
+.sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:70;opacity:0;pointer-events:none;transition:.25s}
+.sheet-bg.show{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:50%;bottom:0;transform:translate(-50%,100%);width:min(560px,100%);max-height:88vh;overflow:auto;background:var(--bg2);border:1px solid var(--line);border-radius:24px 24px 0 0;z-index:80;padding:22px 18px 24px;transition:transform .3s ease}
+.sheet.show{transform:translate(-50%,0)}
+.sheet h3{font-size:22px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.line{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.line .n{flex:1}
+.line .n small{color:var(--muted);display:block}
+.total{display:flex;justify-content:space-between;font-size:19px;font-weight:700;margin:16px 0}
+.sheet .btn{width:100%;margin-top:8px}
+.note{color:var(--muted);font-size:13px;margin-top:10px;text-align:center}
+.toast{position:fixed;top:84px;left:50%;transform:translate(-50%,-20px);background:var(--ok);color:#fff;padding:12px 18px;border-radius:12px;z-index:90;opacity:0;transition:.25s;pointer-events:none;font-weight:500;max-width:calc(100% - 32px);text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a href="#" class="logo"><span class="logo-mark"><svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2c2.2 3.3 4.5 4.9 4.5 8.4A4.5 4.5 0 0 1 7.5 10.6c0-1.9 1.1-3 1.9-4.1.4 1.5 1.1 2.2 1.9 2.2C10.9 6.5 11.3 4.6 12 2zM4 17h16v2H4z"/></svg></span><span data-f="name">Bilol Shashlik</span></a>
+    <nav class="nav-links"><a href="#menu">Menyu</a><a href="#about">Biz haqimizda</a><a href="#contact">Manzil</a></nav>
+    <a class="btn btn-fire" id="navCall" href="#contact"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg><span>Qo'ng'iroq</span></a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow"><span class="dot" id="openDot"></span><span id="hoursText">Har kuni ochiq</span></div>
+      <h1><span data-f="name">Bilol Shashlik</span><br><em id="taglineEl">olovda pishgan</em></h1>
+      <p class="lead" data-f="heroText">Har kuni yangi go'sht, maxsus marinad va ko'mirda sekin pishirilgan shashlik.</p>
+      <div class="hero-cta">
+        <a href="#menu" class="btn btn-fire">Menyuni ko'rish</a>
+        <a href="#" class="btn btn-ghost" id="heroTg" target="_blank" rel="noopener"><svg class="i" viewBox="0 0 24 24" fill="currentColor"><path d="M9.8 15.2l-.4 5.3c.6 0 .8-.2 1.1-.5l2.6-2.5 5.4 4c1 .5 1.7.3 2-.9l3.6-17c.3-1.5-.5-2.1-1.5-1.7L1.4 9.9c-1.4.6-1.4 1.4-.2 1.8l5.4 1.7L19 5.5c.6-.4 1.1-.2.7.2z"/></svg>Telegram orqali buyurtma</a>
+      </div>
+      <div class="hero-stats">
+        <div><b>100%</b><span>yangi go'sht</span></div>
+        <div><b>Ko'mirda</b><span>tabiiy olovda</span></div>
+        <div><b id="statCount">—</b><span>turdagi taom</span></div>
+      </div>
+    </div>
+    <div class="hero-visual" id="heroVisual">
+      <div class="ph">
+        <svg viewBox="0 0 400 300" fill="none">
+          <g class="flame"><path d="M120 250c-20-30 0-50 10-70 5 20 15 25 20 25-5-30 10-50 25-70 10 35 45 55 45 95 0 15-5 25-10 30z" fill="#e8611a" opacity=".85"/><path d="M190 255c-15-25 5-40 12-55 4 15 12 18 16 18-3-20 8-35 18-48 8 25 32 40 32 68 0 8-3 14-6 17z" fill="#ff8a3d" opacity=".9"/><path d="M250 250c-10-20 3-32 9-44 3 12 9 15 12 15-2-17 6-28 14-38 6 20 25 32 25 55 0 6-2 10-4 12z" fill="#f2b544" opacity=".9"/></g>
+          <rect x="40" y="118" width="330" height="6" rx="3" fill="#c9c2b8"/>
+          <g><rect x="80" y="100" width="38" height="40" rx="12" fill="#8b3a1a"/><rect x="124" y="102" width="30" height="36" rx="10" fill="#e9d7b9"/><rect x="160" y="98" width="40" height="44" rx="13" fill="#7a2f14"/><rect x="206" y="103" width="28" height="34" rx="10" fill="#9c4a22"/><rect x="240" y="99" width="40" height="42" rx="13" fill="#6f2a12"/><rect x="286" y="104" width="26" height="32" rx="9" fill="#e9d7b9"/></g>
+          <rect x="30" y="112" width="18" height="18" rx="4" fill="#5b4a3c"/>
+          <rect x="40" y="258" width="320" height="16" rx="8" fill="#2a1f18"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="menu" style="padding-top:24px">
+  <div class="wrap">
+    <div class="sec-head"><div><h2>Menyu</h2><p>Narxlar har doim yangilangan holatda</p></div></div>
+    <div class="tabs" id="tabs"></div>
+    <div id="menuBody"><div class="grid"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div></div>
+  </div>
+</section>
+
+<section class="block" id="about" style="background:linear-gradient(180deg,transparent,#1b140f 30%,#1b140f 70%,transparent)">
+  <div class="wrap">
+    <div class="sec-head"><h2>Nega aynan biz?</h2></div>
+    <div class="feats">
+      <div class="feat"><div class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.4-.5-2-1-3-1.1-2.1-.2-4.1 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.2.4-2.3 1-3.3.3 1.5 1.2 2.8 2.5 2.8z"/></svg></div><h3>Haqiqiy ko'mir olovi</h3><p>Gaz emas — faqat ko'mir. Shuning uchun ta'mi va hidi boshqacha.</p></div>
+      <div class="feat"><div class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div><h3>Har kuni yangi go'sht</h3><p>Go'sht har tong olinadi va o'z retseptimiz bo'yicha marinadlanadi.</p></div>
+      <div class="feat"><div class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.8 15.2l-.4 5.3c.6 0 .8-.2 1.1-.5l2.6-2.5 5.4 4c1 .5 1.7.3 2-.9l3.6-17c.3-1.5-.5-2.1-1.5-1.7L1.4 9.9c-1.4.6-1.4 1.4-.2 1.8l5.4 1.7L19 5.5"/></svg></div><h3>Oson buyurtma</h3><p>Menyudan tanlang va Telegram orqali bir necha soniyada buyurtma bering.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="contact">
+  <div class="wrap">
+    <div class="sec-head"><h2>Bizni toping</h2></div>
+    <div class="contact">
+      <div class="info">
+        <div class="info-row"><div class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><small>Manzil</small><b data-f="address">—</b></div></div>
+        <div class="info-row"><div class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div><div><small>Ish vaqti</small><b data-f="hours">—</b></div></div>
+        <div class="info-row"><div class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></div><div><small>Telefon</small><div id="contactPhones"></div></div></div>
+        <a class="btn btn-fire" id="contactTg" target="_blank" rel="noopener" href="#">Telegram orqali yozish</a>
+      </div>
+      <div class="map" id="map">Xarita admin paneldan qo'shiladi</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a href="#" class="logo"><span class="logo-mark"><svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2c2.2 3.3 4.5 4.9 4.5 8.4A4.5 4.5 0 0 1 7.5 10.6c0-1.9 1.1-3 1.9-4.1.4 1.5 1.1 2.2 1.9 2.2C10.9 6.5 11.3 4.6 12 2zM4 17h16v2H4z"/></svg></span><span data-f="name">Bilol Shashlik</span></a>
+        <p style="margin-top:14px;max-width:340px" data-f="tagline">Olovda pishgan haqiqiy shashlik</p>
+        <div class="socials">
+          <a class="soc" id="fTgIcon" target="_blank" rel="noopener" aria-label="Telegram" href="#"><svg class="i" viewBox="0 0 24 24" fill="currentColor"><path d="M9.8 15.2l-.4 5.3c.6 0 .8-.2 1.1-.5l2.6-2.5 5.4 4c1 .5 1.7.3 2-.9l3.6-17c.3-1.5-.5-2.1-1.5-1.7L1.4 9.9c-1.4.6-1.4 1.4-.2 1.8l5.4 1.7L19 5.5c.6-.4 1.1-.2.7.2z"/></svg></a>
+          <a class="soc" id="fIgIcon" target="_blank" rel="noopener" aria-label="Instagram" href="#"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+          <a class="soc" id="fCallIcon" aria-label="Qo'ng'iroq" href="#"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>Ijtimoiy tarmoqlar</h4>
+        <ul>
+          <li><a id="fTg" target="_blank" rel="noopener" href="#"><svg class="i" viewBox="0 0 24 24" fill="currentColor"><path d="M9.8 15.2l-.4 5.3c.6 0 .8-.2 1.1-.5l2.6-2.5 5.4 4c1 .5 1.7.3 2-.9l3.6-17c.3-1.5-.5-2.1-1.5-1.7L1.4 9.9c-1.4.6-1.4 1.4-.2 1.8l5.4 1.7L19 5.5c.6-.4 1.1-.2.7.2z"/></svg><span>@Bilolshashlik_Bot</span></a></li>
+          <li><a id="fIg" target="_blank" rel="noopener" href="#"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg><span>@bilol_shashlik1</span></a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Telefon raqamlar</h4>
+        <ul id="fPhones"></ul>
+        <p style="margin-top:14px" data-f="hours"></p>
+      </div>
+    </div>
+    <div class="copy"><span>© <span id="year"></span> <span data-f="name">Bilol Shashlik</span>. Barcha huquqlar himoyalangan.</span><span data-f="address"></span></div>
+  </div>
+</footer>
+
+<div class="cartbar" id="cartbar">
+  <div><b id="cartTotal">0 so'm</b><small id="cartCount">0 ta taom</small></div>
+  <button class="btn btn-fire" id="openCart">Buyurtmani ko'rish</button>
+</div>
+<div class="sheet-bg" id="sheetBg"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Buyurtma">
+  <h3>Buyurtmangiz <button id="closeCart" aria-label="Yopish" style="font-size:28px;line-height:1">&times;</button></h3>
+  <div id="cartLines"></div>
+  <div class="total"><span>Jami</span><span id="sheetTotal"></span></div>
+  <button class="btn btn-fire" id="sendTg"><svg class="i" viewBox="0 0 24 24" fill="currentColor"><path d="M9.8 15.2l-.4 5.3c.6 0 .8-.2 1.1-.5l2.6-2.5 5.4 4c1 .5 1.7.3 2-.9l3.6-17c.3-1.5-.5-2.1-1.5-1.7L1.4 9.9c-1.4.6-1.4 1.4-.2 1.8l5.4 1.7L19 5.5c.6-.4 1.1-.2.7.2z"/></svg>Telegram orqali buyurtma berish</button>
+  <a class="btn btn-ghost" id="sheetCall" href="#">Qo'ng'iroq qilib buyurtma berish</a>
+  <button class="btn btn-ghost" id="clearCart" style="color:var(--muted)">Tozalash</button>
+  <p class="note">Buyurtma matni nusxalanadi — Telegram ochilgach, xabar maydoniga joylab (Paste) yuboring.</p>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const fmt = (n) => Math.round(n).toLocaleString("ru-RU").replace(/,/g, " ");
+  const telHref = (p) => "tel:" + String(p).replace(/[^\d+]/g, "");
+  const PH = '<div class="ph"><svg viewBox="0 0 100 60" fill="currentColor"><rect x="4" y="28" width="92" height="3" rx="1.5"/><rect x="16" y="18" width="14" height="22" rx="5"/><rect x="33" y="20" width="11" height="18" rx="4" opacity=".6"/><rect x="47" y="17" width="15" height="24" rx="5"/><rect x="65" y="20" width="11" height="18" rx="4" opacity=".6"/></svg></div>';
+
+  let DATA = null, cur = "all", cart = {};
+  try { cart = JSON.parse(localStorage.getItem("bs_cart") || "{}") || {}; } catch { cart = {}; }
+  const saveCart = () => { try { localStorage.setItem("bs_cart", JSON.stringify(cart)); } catch {} };
+  const money = (n) => `${fmt(n)} ${esc(DATA?.settings?.currency || "so'm")}`;
+
+  function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2600); }
+
+  function applySettings(s) {
+    document.title = `${s.name} — ${s.tagline || "shashlik"}`;
+    $$('[data-f]').forEach((el) => { const v = s[el.dataset.f]; if (v) el.textContent = v; });
+    $("#taglineEl").textContent = s.tagline || "";
+    $("#hoursText").textContent = s.hours || "Har kuni ochiq";
+    const tg = s.telegram ? `https://t.me/${encodeURIComponent(s.telegram)}` : "#";
+    const ig = s.instagram ? `https://instagram.com/${encodeURIComponent(s.instagram)}` : "#";
+    ["#heroTg", "#contactTg", "#fTg", "#fTgIcon"].forEach((id) => ($(id).href = tg));
+    ["#fIg", "#fIgIcon"].forEach((id) => ($(id).href = ig));
+    $("#fTg span").textContent = "@" + (s.telegram || "");
+    $("#fIg span").textContent = "@" + (s.instagram || "");
+    const phones = s.phones || [];
+    const first = phones[0] ? telHref(phones[0]) : "#contact";
+    ["#navCall", "#fCallIcon", "#sheetCall"].forEach((id) => ($(id).href = first));
+    $("#fPhones").innerHTML = phones.map((p) => `<li><a href="${telHref(p)}"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>${esc(p)}</a></li>`).join("");
+    $("#contactPhones").innerHTML = phones.map((p) => `<a href="${telHref(p)}" style="display:block;font-weight:600">${esc(p)}</a>`).join("") || "—";
+    if (s.mapEmbed) $("#map").innerHTML = `<iframe src="${esc(s.mapEmbed)}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Xarita"></iframe>`;
+    if (s.heroImage) $("#heroVisual").innerHTML = `<img src="${esc(s.heroImage)}" alt="${esc(s.name)}">`;
+  }
+
+  function renderTabs() {
+    const cats = DATA.categories.filter((c) => DATA.items.some((i) => i.categoryId === c.id));
+    const hasPopular = DATA.items.some((i) => i.popular && i.available);
+    const tabs = [{ id: "all", name: "Hammasi" }, ...(hasPopular ? [{ id: "popular", name: "Mashhur" }] : []), ...cats];
+    $("#tabs").innerHTML = tabs.map((t) => `<button class="tab ${t.id === cur ? "on" : ""}" data-id="${esc(t.id)}">${esc(t.name)}</button>`).join("");
+  }
+
+  function card(i) {
+    const q = cart[i.id] || 0;
+    const ctrl = !i.available ? "" : q
+      ? `<div class="qty"><button data-dec="${esc(i.id)}" aria-label="Kamaytirish">−</button><b>${q}</b><button data-inc="${esc(i.id)}" aria-label="Ko'paytirish">+</button></div>`
+      : `<button class="add" data-inc="${esc(i.id)}" aria-label="Qo'shish">+</button>`;
+    return `<article class="card ${i.available ? "" : "unavailable"}">
+      <div class="pic">${i.image ? `<img src="${esc(i.image)}" alt="${esc(i.name)}" loading="lazy">` : PH}
+        ${!i.available ? '<span class="badge off">Hozir yo\'q</span>' : i.popular ? '<span class="badge">Mashhur</span>' : ""}</div>
+      <div class="body"><h3>${esc(i.name)}</h3><p class="desc">${esc(i.description)}</p>
+        <div class="row"><div class="price">${fmt(i.price)} <small>${esc(DATA.settings.currency)}</small></div>${ctrl}</div></div>
+    </article>`;
+  }
+
+  function renderMenu() {
+    const items = DATA.items;
+    let html = "";
+    if (cur === "all") {
+      html = DATA.categories.map((c) => {
+        const list = items.filter((i) => i.categoryId === c.id);
+        return list.length ? `<h3 class="cat-h">${esc(c.name)}</h3><div class="grid">${list.map(card).join("")}</div>` : "";
+      }).join("");
+    } else {
+      const list = cur === "popular" ? items.filter((i) => i.popular) : items.filter((i) => i.categoryId === cur);
+      html = list.length ? `<div class="grid">${list.map(card).join("")}</div>` : "";
+    }
+    $("#menuBody").innerHTML = html || '<div class="empty">Bu bo\'limda hozircha taom yo\'q</div>';
+  }
+
+  function renderCart() {
+    const byId = Object.fromEntries(DATA.items.map((i) => [i.id, i]));
+    for (const id of Object.keys(cart)) if (!byId[id] || !byId[id].available || cart[id] <= 0) delete cart[id];
+    saveCart();
+    const lines = Object.entries(cart).map(([id, q]) => ({ ...byId[id], q }));
+    const total = lines.reduce((s, l) => s + l.price * l.q, 0);
+    const count = lines.reduce((s, l) => s + l.q, 0);
+    $("#cartbar").classList.toggle("show", count > 0);
+    document.body.classList.toggle("has-cart", count > 0);
+    $("#cartTotal").innerHTML = money(total);
+    $("#cartCount").textContent = `${count} ta taom`;
+    $("#sheetTotal").innerHTML = money(total);
+    $("#cartLines").innerHTML = lines.map((l) => `<div class="line"><div class="n"><b>${esc(l.name)}</b><small>${fmt(l.price)} × ${l.q} = ${fmt(l.price * l.q)}</small></div>
+      <div class="qty"><button data-dec="${esc(l.id)}">−</button><b>${l.q}</b><button data-inc="${esc(l.id)}">+</button></div></div>`).join("");
+    if (!count) closeSheet();
+    return { lines, total };
+  }
+
+  const renderAll = () => { renderTabs(); renderMenu(); renderCart(); };
+
+  document.addEventListener("click", (e) => {
+    const t = e.target.closest("[data-inc],[data-dec],.tab");
+    if (!t) return;
+    if (t.classList.contains("tab")) { cur = t.dataset.id; renderTabs(); renderMenu(); return; }
+    const id = t.dataset.inc || t.dataset.dec;
+    cart[id] = Math.max(0, (cart[id] || 0) + (t.dataset.inc ? 1 : -1));
+    renderMenu(); renderCart();
+  });
+
+  const openSheet = () => { $("#sheet").classList.add("show"); $("#sheetBg").classList.add("show"); };
+  function closeSheet() { $("#sheet").classList.remove("show"); $("#sheetBg").classList.remove("show"); }
+  $("#openCart").onclick = openSheet;
+  $("#closeCart").onclick = closeSheet;
+  $("#sheetBg").onclick = closeSheet;
+  document.addEventListener("keydown", (e) => e.key === "Escape" && closeSheet());
+  $("#clearCart").onclick = () => { cart = {}; renderMenu(); renderCart(); };
+
+  $("#sendTg").onclick = async () => {
+    const { lines, total } = renderCart();
+    const cur$ = DATA.settings.currency;
+    const text = `Assalomu alaykum! Buyurtma bermoqchiman:\n\n${lines.map((l, n) => `${n + 1}. ${l.name} — ${l.q} ta × ${fmt(l.price)} = ${fmt(l.price * l.q)} ${cur$}`).join("\n")}\n\nJami: ${fmt(total)} ${cur$}\n\nIsm:\nTelefon:\nManzil (yetkazish uchun):`;
+    let copied = false;
+    try { await navigator.clipboard.writeText(text); copied = true; } catch {}
+    toast(copied ? "Buyurtma nusxalandi — Telegramda joylab yuboring" : "Telegram ochilmoqda...");
+    const u = DATA.settings.telegram;
+    if (u) window.open(`https://t.me/${encodeURIComponent(u)}`, "_blank", "noopener");
+  };
+
+  $("#year").textContent = new Date().getFullYear();
+
+  fetch("/api/data", { cache: "no-store" })
+    .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then((d) => {
+      DATA = d;
+      applySettings(d.settings);
+      $("#statCount").textContent = d.items.filter((i) => i.available).length;
+      renderAll();
+    })
+    .catch(() => { $("#menuBody").innerHTML = '<div class="empty">Menyuni yuklab bo\'lmadi. Sahifani yangilang.</div>'; });
+})();
+</script>
+</body>
+</html>

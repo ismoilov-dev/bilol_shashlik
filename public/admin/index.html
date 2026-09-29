@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin panel — Bilol Shashlik</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23e8611a'/%3E%3Cpath d='M32 12c6 9 12 13 12 22a12 12 0 0 1-24 0c0-5 3-8 5-11 1 4 3 6 5 6-1-6 0-11 2-17z' fill='%23fff3e6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f3ef;--card:#fff;--line:#e7e0d8;--text:#221a14;--muted:#7b6d61;--ember:#e8611a;--ember2:#ff8a3d;--ok:#2f9e5b;--bad:#d64541;--r:14px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Rubik,system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;font-size:15px}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+a{color:inherit}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 16px;border-radius:10px;font-weight:600;white-space:nowrap;transition:.15s}
+.btn-p{background:var(--ember);color:#fff}.btn-p:hover{background:#d0550f}
+.btn-p:disabled{opacity:.5;cursor:not-allowed}
+.btn-g{background:#fff;border:1px solid var(--line)}.btn-g:hover{background:#faf7f4}
+.btn-d{color:var(--bad)}.btn-d:hover{background:#fdecec}
+.btn-s{padding:7px 11px;font-size:14px}
+input[type=text],input[type=number],input[type=password],input[type=url],select,textarea{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:10px;background:#fff;outline:none;transition:.15s}
+input:focus,select:focus,textarea:focus{border-color:var(--ember);box-shadow:0 0 0 3px rgba(232,97,26,.15)}
+textarea{resize:vertical;min-height:80px}
+label.f{display:block;margin-bottom:14px}
+label.f>span{display:block;font-weight:500;margin-bottom:6px;font-size:14px}
+label.f small{display:block;color:var(--muted);font-size:13px;margin-top:5px}
+.hidden{display:none!important}
+
+/* login */
+.login{min-height:100vh;display:grid;place-items:center;padding:16px}
+.login form{width:100%;max-width:380px;background:#fff;padding:32px 26px;border-radius:20px;border:1px solid var(--line);box-shadow:0 20px 50px -20px rgba(0,0,0,.15)}
+.login h1{font-size:24px;margin:14px 0 4px}
+.login p{color:var(--muted);margin-bottom:22px}
+.mark{width:48px;height:48px;border-radius:13px;background:linear-gradient(135deg,var(--ember),#f2b544);display:grid;place-items:center}
+.err{color:var(--bad);font-size:14px;margin-top:10px;min-height:20px}
+
+/* layout */
+.top{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top-in{max-width:1100px;margin:0 auto;padding:0 16px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700}
+.brand .mark{width:34px;height:34px;border-radius:10px}
+.top-actions{display:flex;gap:8px;align-items:center}
+.status{font-size:13px;color:var(--muted)}
+.status.dirty{color:var(--ember);font-weight:600}
+main{max-width:1100px;margin:0 auto;padding:20px 16px 120px}
+.tabs{display:flex;gap:6px;margin-bottom:20px;background:#ece6df;padding:5px;border-radius:12px;width:fit-content;max-width:100%;overflow-x:auto}
+.tabs button{padding:9px 16px;border-radius:9px;font-weight:500;color:var(--muted);white-space:nowrap}
+.tabs button.on{background:#fff;color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.panel+.panel{margin-top:16px}
+.panel h2{font-size:18px;margin-bottom:4px}
+.panel .sub{color:var(--muted);font-size:14px;margin-bottom:16px}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+.bar input,.bar select{width:auto;flex:1;min-width:160px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+@media(max-width:640px){.two{grid-template-columns:1fr}.top .status{display:none}}
+
+/* items */
+.items{display:flex;flex-direction:column;gap:8px}
+.it{display:grid;grid-template-columns:56px 1fr 150px auto;gap:12px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.it.off{background:#faf8f6}
+.it.off .nm{color:var(--muted);text-decoration:line-through}
+.thumb{width:56px;height:56px;border-radius:10px;background:#f1ebe4 center/cover no-repeat;display:grid;place-items:center;color:#c8b8a8;font-size:12px}
+.nm{font-weight:600}
+.meta{font-size:13px;color:var(--muted)}
+.pr{position:relative}
+.pr input{padding-right:44px;font-weight:600}
+.pr span{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:13px}
+.acts{display:flex;gap:4px;align-items:center}
+.sw{position:relative;width:42px;height:24px;border-radius:99px;background:#d8cfc6;transition:.2s;flex:none}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.sw.on{background:var(--ok)}.sw.on::after{left:21px}
+@media(max-width:640px){.it{grid-template-columns:48px 1fr;grid-template-areas:"t n" "p p" "a a"}.it .thumb{width:48px;height:48px;grid-area:t}.it .ninfo{grid-area:n}.it .pr{grid-area:p}.it .acts{grid-area:a;justify-content:space-between}}
+.empty{padding:30px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:12px}
+
+/* cats */
+.cat{display:flex;gap:8px;align-items:center;padding:8px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px}
+.cat input{flex:1}
+.cat .cnt{font-size:13px;color:var(--muted);white-space:nowrap}
+
+/* modal */
+.mbg{position:fixed;inset:0;background:rgba(20,14,10,.5);z-index:50;display:grid;place-items:center;padding:16px}
+.modal{background:#fff;border-radius:18px;width:100%;max-width:560px;max-height:92vh;overflow:auto;padding:22px}
+.modal h3{font-size:20px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
+.modal .foot{display:flex;gap:8px;justify-content:flex-end;margin-top:8px;flex-wrap:wrap}
+.imgbox{display:flex;gap:14px;align-items:center}
+.imgbox .prev{width:110px;height:82px;border-radius:12px;background:#f1ebe4 center/cover no-repeat;flex:none;display:grid;place-items:center;color:var(--muted);font-size:12px;text-align:center}
+.chk{display:flex;align-items:center;gap:10px;margin-bottom:12px;cursor:pointer;user-select:none}
+.chk input{width:18px;height:18px;accent-color:var(--ember)}
+
+.toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,20px);background:var(--text);color:#fff;padding:12px 18px;border-radius:12px;opacity:0;transition:.25s;z-index:99;pointer-events:none;max-width:calc(100% - 32px);text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.toast.bad{background:var(--bad)}
+.savebar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);padding:12px 16px;display:flex;justify-content:center;gap:10px;z-index:40;transform:translateY(100%);transition:.25s;box-shadow:0 -8px 30px -12px rgba(0,0,0,.15)}
+.savebar.show{transform:none}
+.savebar .btn{min-width:180px}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login" id="loginView">
+  <form id="loginForm">
+    <div class="mark"><svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M12 2c2.2 3.3 4.5 4.9 4.5 8.4A4.5 4.5 0 0 1 7.5 10.6c0-1.9 1.1-3 1.9-4.1.4 1.5 1.1 2.2 1.9 2.2C10.9 6.5 11.3 4.6 12 2zM4 17h16v2H4z"/></svg></div>
+    <h1>Admin panel</h1>
+    <p>Bilol Shashlik saytini boshqarish</p>
+    <label class="f"><span>Parol</span><input type="password" id="pw" autocomplete="current-password" required autofocus></label>
+    <button class="btn btn-p" style="width:100%" id="loginBtn">Kirish</button>
+    <div class="err" id="loginErr"></div>
+  </form>
+</div>
+
+<!-- APP -->
+<div id="appView" class="hidden">
+  <div class="top"><div class="top-in">
+    <div class="brand"><div class="mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M12 2c2.2 3.3 4.5 4.9 4.5 8.4A4.5 4.5 0 0 1 7.5 10.6c0-1.9 1.1-3 1.9-4.1.4 1.5 1.1 2.2 1.9 2.2C10.9 6.5 11.3 4.6 12 2zM4 17h16v2H4z"/></svg></div>Admin</div>
+    <div class="top-actions">
+      <span class="status" id="status">Saqlangan</span>
+      <a class="btn btn-g btn-s" href="/" target="_blank" rel="noopener">Saytni ko'rish</a>
+      <button class="btn btn-g btn-s" id="logout">Chiqish</button>
+    </div>
+  </div></div>
+
+  <main>
+    <div class="tabs" id="tabs">
+      <button data-t="items" class="on">Taomlar va narxlar</button>
+      <button data-t="cats">Kategoriyalar</button>
+      <button data-t="settings">Sozlamalar va kontaktlar</button>
+    </div>
+
+    <!-- ITEMS -->
+    <section data-v="items">
+      <div class="panel">
+        <div class="bar">
+          <input type="text" id="q" placeholder="Qidirish...">
+          <select id="fCat"></select>
+          <button class="btn btn-p" id="addItem">+ Yangi taom</button>
+        </div>
+        <div class="items" id="itemList"></div>
+      </div>
+    </section>
+
+    <!-- CATEGORIES -->
+    <section data-v="cats" class="hidden">
+      <div class="panel">
+        <h2>Kategoriyalar</h2>
+        <p class="sub">Tartibni o'q tugmalari bilan o'zgartiring. Saytda ham xuddi shu tartibda chiqadi.</p>
+        <div id="catList"></div>
+        <div class="bar" style="margin:14px 0 0"><input type="text" id="newCat" placeholder="Yangi kategoriya nomi (masalan: Somsalar)"><button class="btn btn-p" id="addCat">Qo'shish</button></div>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section data-v="settings" class="hidden">
+      <div class="panel">
+        <h2>Asosiy ma'lumotlar</h2><p class="sub">Saytning yuqori qismida ko'rinadi</p>
+        <div class="two">
+          <label class="f"><span>Nomi</span><input type="text" data-s="name"></label>
+          <label class="f"><span>Shior (qisqa)</span><input type="text" data-s="tagline"></label>
+        </div>
+        <label class="f"><span>Tavsif matni</span><textarea data-s="heroText"></textarea></label>
+        <label class="f"><span>Asosiy rasm</span>
+          <div class="imgbox"><div class="prev" id="heroPrev">Rasm yo'q</div>
+            <div><input type="file" id="heroFile" accept="image/*" class="hidden"><button type="button" class="btn btn-g btn-s" id="heroPick">Rasm yuklash</button> <button type="button" class="btn btn-d btn-s" id="heroDel">O'chirish</button><small>Bo'lmasa, chiroyli illyustratsiya ko'rsatiladi</small></div></div>
+        </label>
+      </div>
+      <div class="panel">
+        <h2>Kontaktlar (footer)</h2><p class="sub">Footer, "Qo'ng'iroq" va "Telegram" tugmalarida ishlatiladi</p>
+        <label class="f"><span>Telefon raqamlar</span><textarea data-s="phones" rows="3" placeholder="+998 90 123 45 67"></textarea><small>Har bir raqamni yangi qatorga yozing. Birinchisi "Qo'ng'iroq" tugmasiga ulanadi.</small></label>
+        <div class="two">
+          <label class="f"><span>Telegram (bot yoki username)</span><input type="text" data-s="telegram" placeholder="Bilolshashlik_Bot"><small>@ belgisisiz ham bo'ladi</small></label>
+          <label class="f"><span>Instagram</span><input type="text" data-s="instagram" placeholder="bilol_shashlik1"></label>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>Manzil va ish vaqti</h2><p class="sub">"Bizni toping" bo'limida ko'rinadi</p>
+        <label class="f"><span>Manzil</span><input type="text" data-s="address" placeholder="Qarshi sh., ... ko'chasi, 12-uy"></label>
+        <div class="two">
+          <label class="f"><span>Ish vaqti</span><input type="text" data-s="hours" placeholder="Har kuni 10:00 — 23:00"></label>
+          <label class="f"><span>Valyuta</span><input type="text" data-s="currency" placeholder="so'm"></label>
+        </div>
+        <label class="f"><span>Xarita (Google Maps embed)</span><textarea data-s="mapEmbed" rows="2" placeholder='<iframe src="https://www.google.com/maps/embed?pb=..."></iframe>'></textarea>
+          <small>Google Maps'da joyingizni oching → "Ulashish" (Share) → "Xaritani joylashtirish" (Embed a map) → "HTML nusxalash" → shu yerga joylang.</small></label>
+      </div>
+    </section>
+  </main>
+
+  <div class="savebar" id="savebar">
+    <button class="btn btn-g" id="discard">Bekor qilish</button>
+    <button class="btn btn-p" id="save">O'zgarishlarni saqlash</button>
+  </div>
+</div>
+
+<!-- ITEM MODAL -->
+<div class="mbg hidden" id="modalBg">
+  <form class="modal" id="itemForm">
+    <h3><span id="mTitle">Taom</span><button type="button" id="mClose" style="font-size:26px;line-height:1">&times;</button></h3>
+    <label class="f"><span>Nomi *</span><input type="text" name="name" required maxlength="100"></label>
+    <div class="two">
+      <label class="f"><span>Narxi *</span><div class="pr"><input type="number" name="price" min="0" step="500" required><span id="mCur">so'm</span></div></label>
+      <label class="f"><span>Kategoriya</span><select name="categoryId" id="mCat"></select></label>
+    </div>
+    <label class="f"><span>Tavsif</span><textarea name="description" rows="2" maxlength="300"></textarea></label>
+    <label class="f"><span>Rasm</span>
+      <div class="imgbox"><div class="prev" id="mPrev">Rasm yo'q</div>
+        <div><input type="file" id="mFile" accept="image/*" class="hidden"><button type="button" class="btn btn-g btn-s" id="mPick">Rasm yuklash</button> <button type="button" class="btn btn-d btn-s" id="mImgDel">O'chirish</button><small>Rasm avtomatik kichraytiriladi</small></div></div>
+    </label>
+    <label class="chk"><input type="checkbox" name="available"> Mavjud (sotuvda bor)</label>
+    <label class="chk"><input type="checkbox" name="popular"> "Mashhur" belgisi</label>
+    <div class="foot">
+      <button type="button" class="btn btn-d" id="mDelete">O'chirish</button>
+      <span style="flex:1"></span>
+      <button type="button" class="btn btn-g" id="mCancel">Bekor</button>
+      <button class="btn btn-p">Tayyor</button>
+    </div>
+  </form>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const fmt = (n) => Math.round(n || 0).toLocaleString("ru-RU").replace(/,/g, " ");
+  const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  const slug = (s) => (s || "").toLowerCase().replace(/[‘’'`ʻʼ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 30) || "cat-" + uid();
+
+  let token = sessionStorage.getItem("bs_token") || "";
+  let DATA = null, SAVED = "", editingId = null, modalImage = "";
+
+  function toast(msg, bad) { const t = $("#toast"); t.textContent = msg; t.className = "toast show" + (bad ? " bad" : ""); clearTimeout(t._h); t._h = setTimeout(() => (t.className = "toast"), 2800); }
+
+  async function api(path, opts = {}) {
+    const r = await fetch(path, { ...opts, headers: { ...(opts.headers || {}), ...(token ? { authorization: "Bearer " + token } : {}) } });
+    const body = await r.json().catch(() => ({}));
+    if (r.status === 401 && path !== "/api/login") { logout("Sessiya tugadi, qayta kiring"); throw new Error("401"); }
+    if (!r.ok) throw new Error(body.error || "Xatolik: " + r.status);
+    return body;
+  }
+
+  // ---------- auth ----------
+  $("#loginForm").onsubmit = async (e) => {
+    e.preventDefault();
+    $("#loginBtn").disabled = true; $("#loginErr").textContent = "";
+    try {
+      const { token: t } = await api("/api/login", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ password: $("#pw").value }) });
+      token = t; sessionStorage.setItem("bs_token", t); $("#pw").value = ""; await boot();
+    } catch (err) { $("#loginErr").textContent = err.message; }
+    $("#loginBtn").disabled = false;
+  };
+  function logout(msg) {
+    token = ""; sessionStorage.removeItem("bs_token");
+    $("#appView").classList.add("hidden"); $("#loginView").classList.remove("hidden");
+    if (msg) $("#loginErr").textContent = msg;
+  }
+  $("#logout").onclick = () => { if (isDirty() && !confirm("Saqlanmagan o'zgarishlar bor. Baribir chiqasizmi?")) return; logout(); };
+
+  // ---------- state ----------
+  const isDirty = () => DATA && JSON.stringify(DATA) !== SAVED;
+  function markDirty() {
+    const d = isDirty();
+    $("#savebar").classList.toggle("show", d);
+    $("#status").textContent = d ? "Saqlanmagan o'zgarishlar" : "Saqlangan";
+    $("#status").classList.toggle("dirty", d);
+  }
+  window.addEventListener("beforeunload", (e) => { if (isDirty()) { e.preventDefault(); e.returnValue = ""; } });
+
+  async function boot() {
+    const d = await fetch("/api/data", { cache: "no-store" }).then((r) => r.json());
+    delete d.updatedAt;
+    DATA = d; SAVED = JSON.stringify(DATA);
+    $("#loginView").classList.add("hidden"); $("#appView").classList.remove("hidden");
+    renderAll(); markDirty();
+  }
+
+  $("#save").onclick = async () => {
+    $("#save").disabled = true;
+    try {
+      const { data } = await api("/api/data", { method: "PUT", headers: { "content-type": "application/json" }, body: JSON.stringify(DATA) });
+      delete data.updatedAt; DATA = data; SAVED = JSON.stringify(DATA);
+      renderAll(); markDirty(); toast("Saqlandi! Saytda yangilandi ✓");
+    } catch (e) { if (e.message !== "401") toast(e.message, true); }
+    $("#save").disabled = false;
+  };
+  $("#discard").onclick = () => { if (!confirm("Barcha saqlanmagan o'zgarishlar bekor qilinsinmi?")) return; DATA = JSON.parse(SAVED); renderAll(); markDirty(); };
+
+  // ---------- tabs ----------
+  $("#tabs").onclick = (e) => {
+    const b = e.target.closest("button"); if (!b) return;
+    $$("#tabs button").forEach((x) => x.classList.toggle("on", x === b));
+    $$("section[data-v]").forEach((s) => s.classList.toggle("hidden", s.dataset.v !== b.dataset.t));
+  };
+
+  function renderAll() { renderCatSelects(); renderItems(); renderCats(); renderSettings(); }
+
+  // ---------- items ----------
+  function renderCatSelects() {
+    const opts = DATA.categories.map((c) => `<option value="${esc(c.id)}">${esc(c.name)}</option>`).join("");
+    const f = $("#fCat").value;
+    $("#fCat").innerHTML = `<option value="">Barcha kategoriyalar</option>` + opts; $("#fCat").value = f && DATA.categories.some((c) => c.id === f) ? f : "";
+    $("#mCat").innerHTML = opts;
+  }
+  function renderItems() {
+    const q = $("#q").value.trim().toLowerCase(), fc = $("#fCat").value;
+    const catName = Object.fromEntries(DATA.categories.map((c) => [c.id, c.name]));
+    const order = Object.fromEntries(DATA.categories.map((c, i) => [c.id, i]));
+    const list = DATA.items
+      .map((it, idx) => ({ it, idx }))
+      .filter(({ it }) => (!fc || it.categoryId === fc) && (!q || it.name.toLowerCase().includes(q)))
+      .sort((a, b) => (order[a.it.categoryId] ?? 99) - (order[b.it.categoryId] ?? 99) || a.idx - b.idx);
+    $("#itemList").innerHTML = list.length ? list.map(({ it }) => `
+      <div class="it ${it.available ? "" : "off"}" data-id="${esc(it.id)}">
+        <div class="thumb" style="${it.image ? `background-image:url('${esc(it.image)}')` : ""}">${it.image ? "" : "—"}</div>
+        <div class="ninfo"><div class="nm">${esc(it.name)}${it.popular ? ' <span style="color:#e8a317">★</span>' : ""}</div><div class="meta">${esc(catName[it.categoryId] || "Kategoriyasiz")}</div></div>
+        <div class="pr"><input type="number" min="0" step="500" value="${it.price}" data-price aria-label="Narx"><span>${esc(DATA.settings.currency)}</span></div>
+        <div class="acts">
+          <button class="sw ${it.available ? "on" : ""}" data-toggle title="Mavjud / yo'q" aria-label="Mavjudlik"></button>
+          <button class="btn btn-g btn-s" data-edit>Tahrirlash</button>
+        </div>
+      </div>`).join("") : `<div class="empty">Taom topilmadi</div>`;
+  }
+  $("#q").oninput = renderItems; $("#fCat").onchange = renderItems;
+  $("#itemList").addEventListener("input", (e) => {
+    if (!e.target.matches("[data-price]")) return;
+    const it = DATA.items.find((x) => x.id === e.target.closest(".it").dataset.id);
+    it.price = Math.max(0, Math.round(Number(e.target.value) || 0)); markDirty();
+  });
+  $("#itemList").addEventListener("click", (e) => {
+    const row = e.target.closest(".it"); if (!row) return;
+    const it = DATA.items.find((x) => x.id === row.dataset.id);
+    if (e.target.closest("[data-toggle]")) { it.available = !it.available; renderItems(); markDirty(); }
+    if (e.target.closest("[data-edit]")) openModal(it);
+  });
+  $("#addItem").onclick = () => {
+    if (!DATA.categories.length) { toast("Avval kategoriya qo'shing", true); return; }
+    openModal(null);
+  };
+
+  // ---------- modal ----------
+  const FORM = $("#itemForm"), F = FORM.elements;
+  function setPrev(el, url) { el.style.backgroundImage = url ? `url('${url}')` : ""; el.textContent = url ? "" : "Rasm yo'q"; }
+  function openModal(it) {
+    editingId = it ? it.id : null;
+    $("#mTitle").textContent = it ? "Taomni tahrirlash" : "Yangi taom";
+    $("#mCur").textContent = DATA.settings.currency;
+    F.name.value = it?.name || ""; F.price.value = it?.price ?? ""; F.description.value = it?.description || "";
+    F.categoryId.value = it?.categoryId || $("#fCat").value || DATA.categories[0]?.id;
+    F.available.checked = it ? it.available : true; F.popular.checked = !!it?.popular;
+    modalImage = it?.image || ""; setPrev($("#mPrev"), modalImage);
+    $("#mDelete").classList.toggle("hidden", !it);
+    $("#modalBg").classList.remove("hidden"); setTimeout(() => F.name.focus(), 50);
+  }
+  const closeModal = () => $("#modalBg").classList.add("hidden");
+  $("#mClose").onclick = closeModal; $("#mCancel").onclick = closeModal;
+  $("#modalBg").onclick = (e) => { if (e.target.id === "modalBg") closeModal(); };
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
+  FORM.onsubmit = (e) => {
+    e.preventDefault();
+    const v = { name: F.name.value.trim(), price: Math.max(0, Math.round(Number(F.price.value) || 0)), description: F.description.value.trim(), categoryId: F.categoryId.value, image: modalImage, available: F.available.checked, popular: F.popular.checked };
+    if (!v.name) return;
+    if (editingId) Object.assign(DATA.items.find((x) => x.id === editingId), v);
+    else DATA.items.push({ id: "i" + uid(), ...v });
+    closeModal(); renderItems(); markDirty();
+  };
+  $("#mDelete").onclick = () => {
+    if (!confirm("Bu taom o'chirilsinmi?")) return;
+    DATA.items = DATA.items.filter((x) => x.id !== editingId); closeModal(); renderItems(); markDirty();
+  };
+  $("#mPick").onclick = () => $("#mFile").click();
+  $("#mImgDel").onclick = () => { modalImage = ""; setPrev($("#mPrev"), ""); };
+  $("#mFile").onchange = async (e) => {
+    const f = e.target.files[0]; e.target.value = ""; if (!f) return;
+    $("#mPrev").textContent = "Yuklanmoqda...";
+    try { modalImage = await uploadImage(f, 1000); setPrev($("#mPrev"), modalImage); }
+    catch (err) { setPrev($("#mPrev"), modalImage); if (err.message !== "401") toast(err.message, true); }
+  };
+
+  // Rasmni brauzerda kichraytirib, keyin serverga yuklaydi
+  async function uploadImage(file, maxSide) {
+    if (!file.type.startsWith("image/")) throw new Error("Faqat rasm fayli tanlang");
+    let blob = file;
+    try {
+      const bmp = await createImageBitmap(file);
+      const k = Math.min(1, maxSide / Math.max(bmp.width, bmp.height));
+      const c = document.createElement("canvas");
+      c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
+      c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height);
+      blob = await new Promise((res) => c.toBlob(res, "image/webp", 0.85));
+      if (!blob || blob.type !== "image/webp") blob = await new Promise((res) => c.toBlob(res, "image/jpeg", 0.85));
+    } catch { /* kichraytirib bo'lmasa, asl fayl yuboriladi */ }
+    const { url } = await api("/api/upload", { method: "POST", headers: { "content-type": blob.type }, body: blob });
+    return url;
+  }
+
+  // ---------- categories ----------
+  function renderCats() {
+    const cnt = (id) => DATA.items.filter((i) => i.categoryId === id).length;
+    $("#catList").innerHTML = DATA.categories.map((c, i) => `
+      <div class="cat" data-i="${i}">
+        <button class="btn btn-g btn-s" data-up ${i === 0 ? "disabled" : ""} aria-label="Yuqoriga">↑</button>
+        <button class="btn btn-g btn-s" data-down ${i === DATA.categories.length - 1 ? "disabled" : ""} aria-label="Pastga">↓</button>
+        <input type="text" value="${esc(c.name)}" data-cname>
+        <span class="cnt">${cnt(c.id)} ta</span>
+        <button class="btn btn-d btn-s" data-del>O'chirish</button>
+      </div>`).join("") || '<div class="empty">Kategoriya yo\'q</div>';
+  }
+  $("#catList").addEventListener("input", (e) => {
+    if (!e.target.matches("[data-cname]")) return;
+    DATA.categories[+e.target.closest(".cat").dataset.i].name = e.target.value; renderCatSelects(); markDirty();
+  });
+  $("#catList").addEventListener("change", () => renderItems());
+  $("#catList").addEventListener("click", (e) => {
+    const row = e.target.closest(".cat"); if (!row) return;
+    const i = +row.dataset.i, C = DATA.categories;
+    if (e.target.closest("[data-up]") && i > 0) [C[i - 1], C[i]] = [C[i], C[i - 1]];
+    else if (e.target.closest("[data-down]") && i < C.length - 1) [C[i + 1], C[i]] = [C[i], C[i + 1]];
+    else if (e.target.closest("[data-del]")) {
+      const n = DATA.items.filter((x) => x.categoryId === C[i].id).length;
+      if (n) { toast(`Bu kategoriyada ${n} ta taom bor. Avval ularni boshqa kategoriyaga o'tkazing yoki o'chiring.`, true); return; }
+      if (!confirm(`"${C[i].name}" o'chirilsinmi?`)) return;
+      C.splice(i, 1);
+    } else return;
+    renderAll(); markDirty();
+  });
+  $("#addCat").onclick = () => {
+    const name = $("#newCat").value.trim(); if (!name) return;
+    let id = slug(name); while (DATA.categories.some((c) => c.id === id)) id = slug(name) + "-" + uid().slice(-3);
+    DATA.categories.push({ id, name }); $("#newCat").value = ""; renderAll(); markDirty();
+  };
+  $("#newCat").onkeydown = (e) => { if (e.key === "Enter") { e.preventDefault(); $("#addCat").click(); } };
+
+  // ---------- settings ----------
+  function renderSettings() {
+    const s = DATA.settings;
+    $$("[data-s]").forEach((el) => { const k = el.dataset.s; el.value = k === "phones" ? (s.phones || []).join("\n") : s[k] || ""; });
+    setPrev($("#heroPrev"), s.heroImage);
+  }
+  document.addEventListener("input", (e) => {
+    const el = e.target.closest("[data-s]"); if (!el) return;
+    const k = el.dataset.s; let v = el.value;
+    if (k === "phones") v = v.split("\n").map((x) => x.trim()).filter(Boolean);
+    if (k === "mapEmbed") { const m = v.match(/src=["']([^"']+)["']/); if (m) v = m[1]; v = v.trim(); }
+    if (k === "telegram" || k === "instagram") v = v.trim().replace(/^@/, "");
+    DATA.settings[k] = v; markDirty();
+    if (k === "currency") renderItems();
+  });
+  $("#heroPick").onclick = () => $("#heroFile").click();
+  $("#heroDel").onclick = () => { DATA.settings.heroImage = ""; setPrev($("#heroPrev"), ""); markDirty(); };
+  $("#heroFile").onchange = async (e) => {
+    const f = e.target.files[0]; e.target.value = ""; if (!f) return;
+    $("#heroPrev").textContent = "Yuklanmoqda...";
+    try { DATA.settings.heroImage = await uploadImage(f, 1600); setPrev($("#heroPrev"), DATA.settings.heroImage); markDirty(); }
+    catch (err) { setPrev($("#heroPrev"), DATA.settings.heroImage); if (err.message !== "401") toast(err.message, true); }
+  };
+
+  if (token) boot().catch(() => logout());
+})();
+</script>
+</body>
+</html>
